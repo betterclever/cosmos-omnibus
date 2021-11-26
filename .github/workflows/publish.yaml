@@ -53,6 +53,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: build
         run: |
+          # Create dummy env file
+          touch .env
           echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
           cd ${{matrix.project}}
           docker-compose build
