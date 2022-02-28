@@ -26,8 +26,12 @@ jobs:
         id: buildx
         with:
           install: true
+      - name: Store image tag
+        run: echo "IMAGE_TAG=ghcr.io/${{ github.repository }}:cache-latest-${{matrix.project}}-${{matrix.version}}${{matrix.tag_suffix}}" >> $GITHUB_ENV
+      - name: Pull existing image if exists
+        run: docker pull ${{ env.IMAGE_TAG }}
       - name: Build
         run: |
           touch .env # Create dummy env file
           cd ${{matrix.project}}
-          docker buildx bake -f build.yml --set node_1.tags=node
+          docker buildx bake -f build.yml  --set node_1.tags={{ env.IMAGE_TAG }} --push
