@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.GHCR_USER }}
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Pull existing image if exists
-        run: docker pull ${{ env.IMAGE_TAG }}
+        run: docker pull ${{ env.IMAGE_TAG }} || true
       - name: Build
         run: |
           touch .env # Create dummy env file
